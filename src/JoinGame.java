@@ -87,7 +87,7 @@ public class JoinGame extends JFrame implements Runnable, ActionListener {
             //Thread inputHandlerThread = new Thread(inputHander);
 
             //inputHandlerThread.start();
-            VehicleDataObject obj = new VehicleDataObject(2, playerName.getText(), 0,0, 0, false, false, false);
+            VehicleDataObject obj = new VehicleDataObject(3, playerName.getText(), 0,0, 0, false, false, false);
             out.writeObject(obj);
             out.flush();
 

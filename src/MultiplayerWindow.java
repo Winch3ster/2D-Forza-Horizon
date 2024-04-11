@@ -32,7 +32,7 @@ public class MultiplayerWindow extends JFrame implements KeyListener{
 
 
     private Timer timer; //check or update frame
-    int TIMER_DELAY = 50;
+    int TIMER_DELAY;
     private final int ANIMATION_TICK_RATE = 50; //50ms per tick
 
     int KARTSPEED = 5;
@@ -93,6 +93,12 @@ public class MultiplayerWindow extends JFrame implements KeyListener{
         this.ipAddress3 = ip3;
         this.ipAddress4 = ip4;
 
+
+        if(this.playerNumber == 2){
+            this.TIMER_DELAY = 80;
+        }else {
+            this.TIMER_DELAY = 100;
+        }
         //Map layer
         MapLayer mapLayer = new MapLayer();
         carIsMoving = false;
@@ -196,6 +202,7 @@ public class MultiplayerWindow extends JFrame implements KeyListener{
     private void updateKartTwoPosition(VehicleDataObject data) {
 
         if(data.getPlayerNumber() != playerNumber){
+            System.out.println("Updating opponent position");
             gameComponentLayer.kartTwo.setLocationx(data.GetLocationX());
             gameComponentLayer.kartTwo.setLocationy(data.GetLocationY());
             gameComponentLayer.kartTwo.setDirection(data.GetDirection());
@@ -374,7 +381,6 @@ public class MultiplayerWindow extends JFrame implements KeyListener{
 
     private void sendPositionUpdateToServer() {
         try {
-            System.out.println("Sending update to server");
             VehicleData d = gameComponentLayer.getPlayerKartData();
             int xv = d.getX();
             int yv = d.getY();

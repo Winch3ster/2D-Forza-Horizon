@@ -108,7 +108,7 @@ public class Server implements Runnable{
 
 
 
-
+                
                 System.out.println("Message sent out: " + response.toString());
 
                 VehicleDataObject data;

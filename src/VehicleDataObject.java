@@ -45,12 +45,11 @@ public class VehicleDataObject implements Serializable {
     @Override
     public String toString() {
         return "VehicleDataObject{" +
+                "playerNumber='" + playerNumber +
                 "playerName='" + playerName + '\'' +
                 ", locationX=" + locationX +
                 ", locationY=" + locationY +
                 ", vehicleDirection=" + vehicleDirection +
-                ", connectionStatus=" + connectionStatus +
-                ", win=" + win +
                 ", crashedWithAnotherVehicle=" + crashedWithAnotherVehicle +
                 '}';
     }
