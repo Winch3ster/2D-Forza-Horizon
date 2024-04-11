@@ -1,0 +1,9 @@
+Things to fix
+- Wall collision
+    -Problem now: When the vehicle collide with the wall, it cannot go forward even if its direction is not towards the wall.
+                  The user need to release the key and press back
+
+
+
+Things to improve if have time
+- Fading engine sound when vehicle stops
