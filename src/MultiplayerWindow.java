@@ -105,7 +105,7 @@ public class MultiplayerWindow extends JFrame implements KeyListener{
 
         //Game component layer
 
-        gameComponentLayer = new MultiplayerGameComponentLayer(gameUILayer, maxlap);
+        gameComponentLayer = new MultiplayerGameComponentLayer(playerNumber, gameUILayer, maxlap);
         gameComponentLayer.setFocusable(true);
         gameComponentLayer.requestFocus();
         gameComponentLayer.addKeyListener(this);
@@ -163,6 +163,8 @@ public class MultiplayerWindow extends JFrame implements KeyListener{
             client = new Socket(host, 9999);
             out = new ObjectOutputStream(client.getOutputStream());
             in = new ObjectInputStream(client.getInputStream());
+
+
             out.writeObject(new VehicleDataObject(playerNumber,"player1", 350,440,0,true,true,true));
             // Start a separate thread to listen for server responses
             new Thread(() -> {

@@ -38,18 +38,28 @@ public class MultiplayerGameComponentLayer extends JPanel {
 
     boolean crashedWithWall = false;
     //Consist of colliders and vehicle
-    public MultiplayerGameComponentLayer(GameUILayer _gameUILayer, int maxlap){
+    public MultiplayerGameComponentLayer(int playerNumber, GameUILayer _gameUILayer, int maxlap){
         setOpaque(false);
         setLayout(null);
         setBounds(0,0, 850, 650);
 
         this.gameUILayer = _gameUILayer;
 
-        kart = new KartAnimatorPanel("kartCyan", "kartOne", 350, 500, maxlap);
-        add(kart);
+        if(playerNumber == 1){
+            kart = new KartAnimatorPanel("kartCyan", "kartOne", 350, 500, maxlap);
+            add(kart);
 
-        kartTwo = new KartAnimatorPanel("kartOrange", "kartTwo", 350, 440, maxlap);
-        add(kartTwo);
+            kartTwo = new KartAnimatorPanel("kartOrange", "kartTwo", 350, 440, maxlap);
+            add(kartTwo);
+        }else{
+            kart = new KartAnimatorPanel("kartOrange", "kartTwo", 350, 440, maxlap);
+            add(kart);
+
+
+            kartTwo = new KartAnimatorPanel("kartCyan", "kartOne", 350, 500, maxlap);
+            add(kartTwo);
+        }
+
 
 
         // wall colliders so vehicle will not exit the map
