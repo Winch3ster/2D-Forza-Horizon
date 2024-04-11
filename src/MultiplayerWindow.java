@@ -195,7 +195,7 @@ public class MultiplayerWindow extends JFrame implements KeyListener{
 
         if(data.getPlayerNumber() != playerNumber){
             gameComponentLayer.kartTwo.setLocationx(data.GetLocationX());
-            gameComponentLayer.kartTwo.setLocationy(data.GetLocationY()-20);
+            gameComponentLayer.kartTwo.setLocationy(data.GetLocationY());
             gameComponentLayer.kartTwo.setDirection(data.GetDirection());
 
             if(data.isWin()){
