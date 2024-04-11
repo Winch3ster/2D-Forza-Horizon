@@ -159,12 +159,10 @@ public class Server implements Runnable{
 
     }
 
-
-    public void runServer(){
-        this.run();
+    public static void main(String[] args) {
+        Server s = new Server();
+        s.run();
     }
-
-
 }
 
 

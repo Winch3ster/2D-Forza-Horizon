@@ -53,8 +53,6 @@ public class HostGame extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if(e.getSource() == startGameButton){
             //Check if friend is ready
-            Server s = new Server();
-            s.runServer();
             MultiplayerWindow w = new MultiplayerWindow(1, "Player1", "127", "0", "0", "1", 3);
             dispose();
         }
