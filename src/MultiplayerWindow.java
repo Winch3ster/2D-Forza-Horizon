@@ -179,7 +179,6 @@ public class MultiplayerWindow extends JFrame implements KeyListener{
 
                 while((data = (VehicleDataObject) in.readObject()) != null){
                     try{
-                        System.out.println("Update from server: " + data.toString());
                         updateKartTwoPosition(data);
                     }catch (Exception e){
                         System.out.println("Error 2: " + e.getMessage());
@@ -207,9 +206,11 @@ public class MultiplayerWindow extends JFrame implements KeyListener{
             gameComponentLayer.kartTwo.setLocationy(data.GetLocationY());
             gameComponentLayer.kartTwo.setDirection(data.GetDirection());
 
-            if(data.isWin()){
-                DisplayGameEndedMessage(data.getPlayerName());
-            }
+
+        }
+
+        if(data.isWin()){
+            DisplayGameEndedMessage(data.getPlayerName());
         }
 
     }

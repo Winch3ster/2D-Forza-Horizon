@@ -100,7 +100,7 @@ public class Server implements Runnable{
 
 
                 VehicleDataObject receivedObj = (VehicleDataObject) in.readObject();
-                System.out.println("Received object from client: " + receivedObj.toString());
+                //System.out.println("Received object from client: " + receivedObj.toString());
 
                 VehicleDataObject response = new VehicleDataObject(receivedObj.getPlayerNumber(), "Server", 0,0, 0, true, false, false);
 
@@ -108,14 +108,14 @@ public class Server implements Runnable{
 
 
 
-                
-                System.out.println("Message sent out: " + response.toString());
+
+                //System.out.println("Message sent out: " + response.toString());
 
                 VehicleDataObject data;
 
                 while((data = (VehicleDataObject) in.readObject()) != null){
 
-                    System.out.println("Update: " + data.toString());
+                    //System.out.println("Update: " + data.toString());
                     broadcast(data);
                 }
 
