@@ -3,9 +3,10 @@ Things to fix
     -Problem now: When the vehicle collide with the wall, it cannot go forward even if its direction is not towards the wall.
                   The user need to release the key and press back
 
-- Decide who's the winner
 - Add match start count down
--
+- Add vehicle crash function
+-Add collider in the middle
+- Improve join game and host game UI
 
 
 

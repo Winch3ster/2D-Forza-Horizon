@@ -76,6 +76,7 @@ public class MultiplayerWindow extends JFrame implements KeyListener{
     String ipAddress3;
     String ipAddress4;
 
+    boolean gameIsOver;
 
 
     public MultiplayerWindow(int playerNumber, String name, String ip1, String ip2,String ip3,String ip4, int maxlap){
@@ -93,7 +94,7 @@ public class MultiplayerWindow extends JFrame implements KeyListener{
         this.ipAddress3 = ip3;
         this.ipAddress4 = ip4;
 
-
+        this.gameIsOver = false;
         if(this.playerNumber == 2){
             this.TIMER_DELAY = 80;
         }else {
@@ -210,7 +211,7 @@ public class MultiplayerWindow extends JFrame implements KeyListener{
         }
 
         if(data.isWin()){
-            DisplayGameEndedMessage(data.getPlayerName());
+            DisplayGameEndedMessage(data.getPlayerNumber());
         }
 
     }
@@ -311,13 +312,14 @@ public class MultiplayerWindow extends JFrame implements KeyListener{
 
     }
 
-    private void DisplayGameEndedMessage(String winner) {
+    private void DisplayGameEndedMessage(int winner) {
+        gameIsOver = true;
         gameComponentLayer.kart.SetKARTSPEED(0, 0); //stop the vehicle
         gameComponentLayer.kartTwo.SetKARTSPEED(0,0);
         clip.stop();
         clip.close();
 
-        JOptionPane.showMessageDialog(null, (winner + " won the round!"), "Round Ended", JOptionPane.PLAIN_MESSAGE);
+        JOptionPane.showMessageDialog(null, ("Player " + winner + " won the round!"), "Round Ended", JOptionPane.PLAIN_MESSAGE);
         dispose();
         playBgMusic = false;
         displayedEndGame = true;
@@ -439,7 +441,14 @@ public class MultiplayerWindow extends JFrame implements KeyListener{
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            sendPositionUpdateToServer();
+
+
+            if(!gameIsOver){
+                sendPositionUpdateToServer();
+            }
+
+
+
             if(carIsMoving){
                 playSound();
             }else{
