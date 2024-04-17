@@ -57,7 +57,20 @@ public class PracticeWindow extends JFrame implements KeyListener{
     boolean displayedEndGame;
     boolean playBgMusic;
 
-    boolean crashWithWall;
+    AudioInputStream crashAudioStream;
+    Clip crashClip;
+
+    private boolean wPressed = false;
+    private boolean sPressed = false;
+    private boolean aPressed = false;
+    private boolean dPressed = false;
+    private boolean uPressed = false;
+    private boolean jPressed = false;
+    private boolean hPressed = false;
+    private boolean kPressed = false;
+
+
+
     public PracticeWindow(){
         setSize(850, 650);
         setLayout(null);
@@ -161,49 +174,133 @@ public class PracticeWindow extends JFrame implements KeyListener{
     @Override
     public void keyPressed(KeyEvent e) {
 
+        char keyChar = e.getKeyChar();
 
+        // Set the corresponding boolean variable to true for each key press
+        if (keyChar == 'w') {
+            wPressed = true;
+            System.out.println("W key pressed: " + wPressed);
 
-        switch (e.getKeyChar()){
-            case 'w':
-                carIsMoving = true;
-
-                 gameComponentLayer.kart.SetKARTSPEED(-5, 0);
-
-            case 's':
-                gameComponentLayer.kart.SetKARTSPEED(5, 0);
-
-                break;
-            case 'a':
-                gameComponentLayer.kart.TurnKart(1);
-
-                //kartOne.setLocation(kartOne.getX(), kartOne.getY()-2);
-
-                break;
-            case 'd':
-                gameComponentLayer.kart.TurnKart(0);
-                //kartOne.setLocation(kartOne.getX(), kartOne.getY()+2);
-                break;
+        } else if (keyChar == 's') {
+            sPressed = true;
+        } else if (keyChar == 'a') {
+            aPressed = true;
+        } else if (keyChar == 'd') {
+            dPressed = true;
+        } else if (keyChar == 'u') {
+            uPressed = true;
+        } else if (keyChar == 'j') {
+            jPressed = true;
+        } else if (keyChar == 'h') {
+            hPressed = true;
+        } else if (keyChar == 'k') {
+            kPressed = true;
         }
+
+
+
+
+
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
 
+        char keyChar = e.getKeyChar();
 
+        // Set the corresponding boolean variable to false for each key release
+        if (keyChar == 'w') {
+            wPressed = false;
+            System.out.println("W key pressed: " + wPressed);
 
-        switch (e.getKeyChar()){
-            case 'w':
-                carIsMoving = false;
-                gameComponentLayer.kart.SetKARTSPEED(0, 0);
-                //kartOne.updateLocation(1, 0);
-                break;
-            case 's':
-
-
-                gameComponentLayer.kart.SetKARTSPEED(0, 0);
-                break;
+        } else if (keyChar == 's') {
+            sPressed = false;
+        } else if (keyChar == 'a') {
+            aPressed = false;
+        } else if (keyChar == 'd') {
+            dPressed = false;
+        } else if (keyChar == 'u') {
+            uPressed = false;
+        } else if (keyChar == 'j') {
+            jPressed = false;
+        } else if (keyChar == 'h') {
+            hPressed = false;
+        } else if (keyChar == 'k') {
+            kPressed = false;
         }
+
+
+
+
     }
+
+    private void updateKartMovements() {
+        // Update kart movements based on the keys currently pressed
+        int kartSpeedX = 0;
+        int kartSpeedY = 0;
+        int kartTurn = 0;
+
+
+        int kartTwoSpeedX = 0;
+        int kartTwoSpeedY = 0;
+        int kartTwoTurn = 0;
+
+
+
+        if (wPressed) {
+            kartTwoSpeedX = 5;
+        } else if (sPressed) {
+            kartTwoSpeedX = -5;
+        }
+
+        if (aPressed) {
+            kartTwoTurn = 1;
+        } else if (dPressed) {
+            kartTwoTurn = 0;
+        }
+
+
+
+        if (uPressed) {
+            kartSpeedX = 5;
+        } else if (jPressed) {
+            kartSpeedX = -5;
+        }
+
+        if (hPressed) {
+            kartTurn = 1;
+        } else if (kPressed) {
+            kartTurn = 0;
+        }
+
+
+        if(!gameComponentLayer.kartOneCrashed || kartSpeedX ==-5){
+            gameComponentLayer.kart.SetKARTSPEED(kartSpeedX, 0);
+        }
+
+        if((hPressed || kPressed) && !gameComponentLayer.kartOneCrashed){
+            gameComponentLayer.kart.TurnKart(kartTurn);
+
+        }
+
+        // Repeat the same logic for kartTwo if needed
+
+
+        //KartTwo --> orange implementing WASD
+
+
+        if(!gameComponentLayer.kartTwoCrashed || kartTwoSpeedX ==-5){
+            gameComponentLayer.kartTwo.SetKARTSPEED(kartTwoSpeedX, 0);
+        }
+
+        if((aPressed || dPressed) && !gameComponentLayer.kartTwoCrashed){
+            gameComponentLayer.kartTwo.TurnKart(kartTwoTurn);
+
+        }
+
+
+    }
+
 
 
     private void playSound() {
@@ -223,12 +320,27 @@ public class PracticeWindow extends JFrame implements KeyListener{
 
     }
 
-    private void DisplayGameEndedMessage() {
+    private void DisplayGameEndedMessage(int winner) {
         gameComponentLayer.kart.SetKARTSPEED(0, 0); //stop the vehicle
         clip.stop();
         clip.close();
 
-        JOptionPane.showMessageDialog(null, "Congratulation! Round ended", "Round Ended", JOptionPane.PLAIN_MESSAGE);
+        JOptionPane.showMessageDialog(null, ("Player " + winner +  " wins! Round ended"), "Round Ended", JOptionPane.PLAIN_MESSAGE);
+
+        MainMenu m = new MainMenu();
+
+        playBgMusic = false;
+        displayedEndGame = true;
+        dispose();
+    }
+
+    private void DisplayGameOverMessage() {
+        gameComponentLayer.kart.SetKARTSPEED(0, 0); //stop the vehicle
+        gameComponentLayer.kartTwo.SetKARTSPEED(0,0);
+        clip.stop();
+        clip.close();
+
+        JOptionPane.showMessageDialog(null, "Game over! Drive safely next time!", "Round Ended", JOptionPane.PLAIN_MESSAGE);
 
         MainMenu m = new MainMenu();
 
@@ -265,9 +377,36 @@ public class PracticeWindow extends JFrame implements KeyListener{
                 stopSound();
             }
 
-            if(gameUILayer.getCurrentLap() == MAXLAP && !displayedEndGame){
-                DisplayGameEndedMessage();
+            if(gameUILayer.getCurrentMaxLap() == MAXLAP && !displayedEndGame){
+
+                int winner = gameUILayer.getWinner();
+                DisplayGameEndedMessage(winner);
+            }
+
+            // Update the kart movements based on the keys pressed
+            updateKartMovements();
+
+            if(gameComponentLayer.gameOver){
+                timer.stop();
+                PlayCarCrashTrack();
+                DisplayGameOverMessage();
+
             }
         }
+    }
+
+    private void PlayCarCrashTrack() {
+        try{
+            File crashAudioFile = new File("src/assets/audio/carCrash1.wav");
+            crashAudioStream = AudioSystem.getAudioInputStream(crashAudioFile);
+
+            crashClip = AudioSystem.getClip();
+            crashClip.open(crashAudioStream);
+            crashClip.start();
+
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+
     }
 }

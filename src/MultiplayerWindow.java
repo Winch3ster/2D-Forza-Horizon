@@ -206,8 +206,6 @@ public class MultiplayerWindow extends JFrame implements KeyListener{
             gameComponentLayer.kartTwo.setLocationx(data.GetLocationX());
             gameComponentLayer.kartTwo.setLocationy(data.GetLocationY());
             gameComponentLayer.kartTwo.setDirection(data.GetDirection());
-
-
         }
 
         if(data.isWin()){
@@ -297,8 +295,6 @@ public class MultiplayerWindow extends JFrame implements KeyListener{
 
     private void playSound() {
         try {
-
-
             clip.loop(Clip.LOOP_CONTINUOUSLY);
         } catch (Exception e) {
             System.out.println("Error playing audio: " + e.getMessage());
@@ -347,40 +343,6 @@ public class MultiplayerWindow extends JFrame implements KeyListener{
         }
 
     }
-
-    /*
-    @Override
-    public void run() {
-
-        try {
-            String host = ipAddress1 + "." + ipAddress2 + "." + ipAddress3 + "." + ipAddress4;
-            client = new Socket(host, 9999);
-
-            InputHander inputHander = new InputHander();
-
-            Thread inputHandlerThread = new Thread(inputHander);
-            inputHandlerThread.start();
-            System.out.println("This is running from multiplayer window");
-
-            out =  new ObjectOutputStream(client.getOutputStream());
-            in = new ObjectInputStream(client.getInputStream());
-
-            VehicleDataObject incomingData;
-
-            while ((incomingData = (VehicleDataObject)in.readObject()) != null){
-
-                System.out.println(incomingData.toString());
-            }
-
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-
-
-    }
-*/
 
     private void sendPositionUpdateToServer() {
         try {
@@ -442,12 +404,9 @@ public class MultiplayerWindow extends JFrame implements KeyListener{
         @Override
         public void actionPerformed(ActionEvent e) {
 
-
             if(!gameIsOver){
                 sendPositionUpdateToServer();
             }
-
-
 
             if(carIsMoving){
                 playSound();

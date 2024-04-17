@@ -48,7 +48,7 @@ public class MainMenu extends JFrame implements ActionListener {
 
 
 
-        tutorialButton = new CustomButton("Practice", new Color(224, 101,76), Color.white);
+        tutorialButton = new CustomButton("Offline PVP", new Color(224, 101,76), Color.white);
         tutorialButton.setLocation(30, 100);
 
 

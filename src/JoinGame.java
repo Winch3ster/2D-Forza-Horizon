@@ -37,14 +37,42 @@ public class JoinGame extends JFrame implements Runnable, ActionListener {
         setIconImage(frameIcon);
 
         JPanel container = new JPanel();
+        container.setLayout(new GridLayout(3, 1));
         container.setBounds(0,0,500, 300);
 
+        JLabel instruction = new JLabel("Enter the IP address shown on\nyour friend's PC to start!");
+
+
+        JPanel ipContainer = new JPanel();
+        ipContainer.setLayout(null);
+
+        JLabel ipLabel = new JLabel("IP Address: ");
+        ipLabel.setBounds(20,0, 100, 30);
         //Text area to input ip address
         ipField1 = new JTextField("127");
-        ipField2 = new JTextField("45");
-        ipField3 = new JTextField("01");
-        ipField4 = new JTextField("10");
+        ipField1.setBounds(130, 0, 50, 30);
 
+        JLabel dot1 = new JLabel(".");
+
+        ipField2 = new JTextField("45");
+        ipField2.setBounds(190, 0, 50, 30);
+        JLabel dot2 = new JLabel(".");
+
+        ipField3 = new JTextField("01");
+        ipField3.setBounds(250, 0, 50, 30);
+        JLabel dot3 = new JLabel(".");
+
+        ipField4 = new JTextField("10");
+        ipField4.setBounds(340, 0, 50, 30);
+
+        ipContainer.add(ipLabel);
+        ipContainer.add(ipField1);
+        ipContainer.add(dot1);
+        ipContainer.add(ipField2);
+        ipContainer.add(dot2);
+        ipContainer.add(ipField3);
+        ipContainer.add(dot3);
+        ipContainer.add(ipField4);
 
 
         playerName = new JTextField("Player2");
@@ -52,11 +80,8 @@ public class JoinGame extends JFrame implements Runnable, ActionListener {
 
         joinGameButton = new JButton("Join game");
         joinGameButton.addActionListener(this);
-        container.add(ipField1);
-        container.add(ipField2);
-        container.add(ipField3);
-        container.add(ipField4);
-        container.add(playerName);
+        container.add(instruction);
+        container.add(ipContainer);
         container.add(joinGameButton);
 
         add(container);

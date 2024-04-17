@@ -18,6 +18,9 @@ public class MultiplayerGameComponentLayer extends JPanel {
     ColliderWall rightCollider;
     ColliderWall topCollider;
     ColliderWall bottomCollider;
+    ColliderWall middleCollider;
+
+
 
     Checkpoint rightCheckpoint;
     Checkpoint topCheckpoint;
@@ -80,7 +83,6 @@ public class MultiplayerGameComponentLayer extends JPanel {
         topCheckpoint = new Checkpoint(1, 20, 200, 450, 65);
         leftCheckpoint = new Checkpoint(2, 190, 20, 65, 300);
 
-
         add(rightCheckpoint);
         add(topCheckpoint);
         add(leftCheckpoint);
@@ -94,17 +96,8 @@ public class MultiplayerGameComponentLayer extends JPanel {
         kart.StartAnimation();
         kartTwo.StartAnimation();
 
-
-
-
         StartTimer();
 
-        //get the crash audio file
-        try{
-
-        }catch(Exception e){
-
-        }
 
     }
 
@@ -211,7 +204,7 @@ public class MultiplayerGameComponentLayer extends JPanel {
                 kart.score++;
                 kart.IncrementLap();
                 System.out.println("Kart one score: " + kart.score);
-                gameUILayer.setCurrentLap(kart.score);
+                gameUILayer.setCurrentLapPlayer1(kart.score);
 
             }
             //Reset

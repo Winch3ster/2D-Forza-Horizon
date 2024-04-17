@@ -2,13 +2,25 @@ Things to fix
 - Wall collision
     -Problem now: When the vehicle collide with the wall, it cannot go forward even if its direction is not towards the wall.
                   The user need to release the key and press back
+    - Problem 2: The crash sound is
 
-- Add match start count down
+
+
+-Change practice --> add another vehicle and set of keys
 - Add vehicle crash function
 -Add collider in the middle
 - Improve join game and host game UI
-
+- Add match start count down
 
 
 Things to improve if have time
 - Fading engine sound when vehicle stops
+
+
+
+
+RFC content for report
+- Type of message and content and why is it necessary
+- Who communicate first (sequence) when does the client make request to the server?
+- Exception handling
+-
