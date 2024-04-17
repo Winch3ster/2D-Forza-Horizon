@@ -4,6 +4,7 @@ public class VehicleData {
     private int direction;
 
     private boolean won;
+
     public VehicleData(int x, int y, int d, boolean w){
         this.x = x;
         this.y = y;

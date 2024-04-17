@@ -33,15 +33,15 @@ public class GameUILayer extends JPanel {
         setLayout(null);
 
         lapDisplay = new JLabel();
-        lapDisplay.setBounds(600, 20, 200, 50);
+        lapDisplay.setBounds(100, 20, 200, 50);
         lapDisplay.setFont(new Font("Calibri", Font.PLAIN, 20));
-        lapDisplay.setText("Player2 lap: " + currentLapPlayer1 + " / " + MAXLAP);
+        lapDisplay.setText("Player1 lap: " + currentLapPlayer1 + " / " + MAXLAP);
 
 
         lapDisplay2 = new JLabel();
-        lapDisplay2.setBounds(100, 20, 200, 50);
+        lapDisplay2.setBounds(600, 20, 200, 50);
         lapDisplay2.setFont(new Font("Calibri", Font.PLAIN, 20));
-        lapDisplay2.setText("Player1 lap: " + currentLapPlayer2 + " / " + MAXLAP);
+        lapDisplay2.setText("Player2 lap: " + currentLapPlayer2 + " / " + MAXLAP);
 
 
         add(lapDisplay);
@@ -62,7 +62,7 @@ public class GameUILayer extends JPanel {
 
     public void setCurrentLapPlayer2(int _currentLap){
         this.currentLapPlayer2 = _currentLap;
-        lapDisplay.setText("Player2 lap: " + currentLapPlayer2 + " / " + MAXLAP);
+        lapDisplay2.setText("Player2 lap: " + currentLapPlayer2 + " / " + MAXLAP);
 
     }
 

@@ -62,10 +62,13 @@ public class MultiplayerWindow extends JFrame implements KeyListener{
     AudioInputStream audioStream;
     Clip clip;
 
+    AudioInputStream crashAudioStream;
+    Clip crashClip;
+
+
     AudioInputStream bgAudioStream;
     Clip bgClip;
 
-    boolean displayedEndGame;
     boolean playBgMusic;
 
     boolean crashWithWall;
@@ -76,7 +79,16 @@ public class MultiplayerWindow extends JFrame implements KeyListener{
     String ipAddress3;
     String ipAddress4;
 
-    boolean gameIsOver;
+
+
+
+
+    private boolean wPressed = false;
+    private boolean sPressed = false;
+    private boolean aPressed = false;
+    private boolean dPressed = false;
+
+
 
 
     public MultiplayerWindow(int playerNumber, String name, String ip1, String ip2,String ip3,String ip4, int maxlap){
@@ -94,7 +106,8 @@ public class MultiplayerWindow extends JFrame implements KeyListener{
         this.ipAddress3 = ip3;
         this.ipAddress4 = ip4;
 
-        this.gameIsOver = false;
+
+
         if(this.playerNumber == 2){
             this.TIMER_DELAY = 80;
         }else {
@@ -129,7 +142,6 @@ public class MultiplayerWindow extends JFrame implements KeyListener{
 
         add(container);
 
-        displayedEndGame = false;
 
         setVisible(true);
         //Audio
@@ -212,6 +224,7 @@ public class MultiplayerWindow extends JFrame implements KeyListener{
             DisplayGameEndedMessage(data.getPlayerNumber());
         }
 
+
     }
 
     private void playBackgroundMusic() {
@@ -250,47 +263,78 @@ public class MultiplayerWindow extends JFrame implements KeyListener{
     public void keyPressed(KeyEvent e) {
 
 
-        switch (e.getKeyChar()){
-            case 'w':
-                carIsMoving = true;
+        char keyChar = e.getKeyChar();
 
-                gameComponentLayer.kart.SetKARTSPEED(-5, 0);
+        // Set the corresponding boolean variable to true for each key press
+        if (keyChar == 'w') {
+            wPressed = true;
+            System.out.println("W key pressed: " + wPressed);
 
-            case 's':
-                gameComponentLayer.kart.SetKARTSPEED(5, 0);
-
-                break;
-            case 'a':
-                gameComponentLayer.kart.TurnKart(1);
-
-                //kartOne.setLocation(kartOne.getX(), kartOne.getY()-2);
-
-                break;
-            case 'd':
-                gameComponentLayer.kart.TurnKart(0);
-                //kartOne.setLocation(kartOne.getX(), kartOne.getY()+2);
-                break;
+        } else if (keyChar == 's') {
+            sPressed = true;
+        } else if (keyChar == 'a') {
+            aPressed = true;
+        } else if (keyChar == 'd') {
+            dPressed = true;
         }
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
+        char keyChar = e.getKeyChar();
 
+        // Set the corresponding boolean variable to false for each key release
+        if (keyChar == 'w') {
+            wPressed = false;
+            carIsMoving = false;
 
-
-        switch (e.getKeyChar()){
-            case 'w':
-                carIsMoving = false;
-                gameComponentLayer.kart.SetKARTSPEED(0, 0);
-                //kartOne.updateLocation(1, 0);
-                break;
-            case 's':
-
-
-                gameComponentLayer.kart.SetKARTSPEED(0, 0);
-                break;
+        } else if (keyChar == 's') {
+            sPressed = false;
+        } else if (keyChar == 'a') {
+            aPressed = false;
+        } else if (keyChar == 'd') {
+            dPressed = false;
         }
+
     }
+
+
+    private void updateKartMovements() {
+        // Update kart movements based on the keys currently pressed
+        int kartSpeedX = 0;
+        int kartSpeedY = 0;
+        int kartTurn = 0;
+
+
+        if (wPressed) {
+            kartSpeedX = 5;
+            carIsMoving = true;
+        } else if (sPressed) {
+            kartSpeedX = -5;
+        }
+
+        if (aPressed) {
+            kartTurn = 1;
+        } else if (dPressed) {
+            kartTurn = 0;
+        }
+
+
+
+        if(!gameComponentLayer.kartCrashed || kartSpeedX ==-5){
+
+            gameComponentLayer.kart.SetKARTSPEED(kartSpeedX, 0);
+        }
+
+        if((aPressed || dPressed) && !gameComponentLayer.kartCrashed){
+            gameComponentLayer.kart.TurnKart(kartTurn);
+
+        }
+
+
+    }
+
+
 
 
     private void playSound() {
@@ -309,7 +353,7 @@ public class MultiplayerWindow extends JFrame implements KeyListener{
     }
 
     private void DisplayGameEndedMessage(int winner) {
-        gameIsOver = true;
+        timer.stop();
         gameComponentLayer.kart.SetKARTSPEED(0, 0); //stop the vehicle
         gameComponentLayer.kartTwo.SetKARTSPEED(0,0);
         clip.stop();
@@ -318,13 +362,25 @@ public class MultiplayerWindow extends JFrame implements KeyListener{
         JOptionPane.showMessageDialog(null, ("Player " + winner + " won the round!"), "Round Ended", JOptionPane.PLAIN_MESSAGE);
         dispose();
         playBgMusic = false;
-        displayedEndGame = true;
         shutdown();
 
         MainMenu m = new MainMenu();
 
 
 
+    }
+
+    private void DisplayGameOverMessage() {
+        timer.stop();
+        clip.stop();
+        clip.close();
+
+        JOptionPane.showMessageDialog(null, "Game over! Drive safely next time!", "Round Ended", JOptionPane.PLAIN_MESSAGE);
+
+        MainMenu m = new MainMenu();
+
+        playBgMusic = false;
+        dispose();
     }
 
 
@@ -357,33 +413,9 @@ public class MultiplayerWindow extends JFrame implements KeyListener{
             out.flush();
 
         } catch (Exception e) {
-            System.out.println("Send position: " + e.getMessage());
         }
     }
 
-    /*
-    class InputHander implements Runnable{
-        @Override
-        public void run() {
-            try{
-                System.out.println("This is running");
-                while(connectionStillAlive){
-
-                    VehicleData d = gameComponentLayer.getPlayerKartData();
-                    //update server
-                    VehicleDataObject object = new VehicleDataObject("player1", d.getX(), d.getY(), d.getDirection(), true, false, false);
-
-                   out.writeObject(object);
-                   out.flush();
-                }
-            }catch (Exception e){
-                System.out.println("error: " + e.getMessage());
-                shutdown();
-            }
-        }
-        //Constantly ask for input from user
-    }
-*/
 
     public void shutdown(){
         connectionStillAlive = false;
@@ -403,19 +435,59 @@ public class MultiplayerWindow extends JFrame implements KeyListener{
 
         @Override
         public void actionPerformed(ActionEvent e) {
+            updateKartMovements();
 
-            if(!gameIsOver){
-                sendPositionUpdateToServer();
-            }
+            sendPositionUpdateToServer();
+
 
             if(carIsMoving){
                 playSound();
             }else{
                 stopSound();
             }
+            CheckIfPlayerWins();
 
+            if(gameComponentLayer.gameOver){
+                PlayCarCrashTrack();
+                try {
+                    out.writeObject(new VehicleDataObject(playerNumber, "kartOne", 0, 0, 0, true, false, true));
+                    out.flush();
+                } catch (IOException a) {
+                    throw new RuntimeException(a);
+                }
+                DisplayGameOverMessage();
+            }
         }
     }
+
+    private void CheckIfPlayerWins() {
+
+        if(gameComponentLayer.kart.currentLap == MAXLAP){
+            try {
+                out.writeObject(new VehicleDataObject(playerNumber, "kartOne", 0, 0, 0, true, true, false));
+                out.flush();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            DisplayGameEndedMessage(1);
+        }
+    }
+
+    private void PlayCarCrashTrack() {
+        try{
+            File crashAudioFile = new File("src/assets/audio/carCrash1.wav");
+            crashAudioStream = AudioSystem.getAudioInputStream(crashAudioFile);
+
+            crashClip = AudioSystem.getClip();
+            crashClip.open(crashAudioStream);
+            crashClip.start();
+
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+
+    }
+
 }
 
 

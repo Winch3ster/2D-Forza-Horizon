@@ -62,7 +62,7 @@ public class VehicleDataObject implements Serializable {
         return win;
     }
 
-    public boolean isCrashedWithAnotherVehicle() {
+    public boolean crashedWithAnotherVehicle() {
         return crashedWithAnotherVehicle;
     }
 

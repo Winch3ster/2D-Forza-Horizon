@@ -381,21 +381,6 @@ public class GameComponentLayer extends JPanel {
                 break;
 
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     }
 
 

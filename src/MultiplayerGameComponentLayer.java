@@ -38,16 +38,24 @@ public class MultiplayerGameComponentLayer extends JPanel {
     AudioInputStream crashAudioStream;
     Clip crashClip;
 
+    boolean kartCrashed = false;
 
     boolean crashedWithWall = false;
+
+    boolean isCheckingCollisionEnter = true;
+
+    int kartCrashPosition;
+    int playerNumber;
     //Consist of colliders and vehicle
+
+    boolean gameOver = false;
     public MultiplayerGameComponentLayer(int playerNumber, GameUILayer _gameUILayer, int maxlap){
         setOpaque(false);
         setLayout(null);
         setBounds(0,0, 850, 650);
 
         this.gameUILayer = _gameUILayer;
-
+        this.playerNumber = playerNumber;
         if(playerNumber == 1){
             kart = new KartAnimatorPanel("kartCyan", "kartOne", 350, 500, maxlap);
             add(kart);
@@ -70,12 +78,14 @@ public class MultiplayerGameComponentLayer extends JPanel {
         rightCollider = new ColliderWall(20, 510, 780, 65);
         topCollider = new ColliderWall(740, 20, 40, 65);
         bottomCollider = new ColliderWall(740, 20, 40, 550);
+        middleCollider = new ColliderWall(320, 128, 270, 267);
 
 
         add(leftCollider);
         add(rightCollider);
         add(topCollider);
         add(bottomCollider);
+        add(middleCollider);
 
 
         //Finish line configurations
@@ -121,56 +131,131 @@ public class MultiplayerGameComponentLayer extends JPanel {
     class TimerHandler implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent e) {
-            CheckCollision();
+
+
+            if(isCheckingCollisionEnter){
+                CheckCollisionEnter();
+            }else{
+                CheckCollisionExit();
+            }
+
+            CheckPointsCollision();
+            CheckCarCrash();
         }
     }
 
-    public void CheckCollision(){
-
-        if(kart.rigidBody.intersects(leftCollider.collider)){
-            kart.SetKARTSPEED(0, 0);
-            if(!crashedWithWall){
-                System.out.println("Collided with left wall");
-                playCrashSound();
-                crashedWithWall = true;
-            }
-        }else{
-            crashedWithWall = false;
-        }
-
-
+    public void CheckCollisionEnter(){
+        // 0 --> left; 1 --> right; 2 --> top; 3 --> bottom;
         if(kart.rigidBody.intersects(bottomCollider.collider)){
             kart.SetKARTSPEED(0, 0);
-            if(!crashedWithWall){
-                System.out.println("Collided with bottom wall");
-                playCrashSound();
-                crashedWithWall = true;
-            }
-        }else{
-            crashedWithWall = false;
+            playCrashSound();
+            System.out.println("Collision occurred!");
+            kartCrashed = true;
+            isCheckingCollisionEnter = false;
+            kartCrashPosition = 3;
+
         }
 
-        if(kart.rigidBody.intersects(rightCollider.collider)){
+
+        if(kart.rigidBody.intersects(leftCollider.collider)) {
             kart.SetKARTSPEED(0, 0);
-            if(!crashedWithWall){
-                System.out.println("Collided with right wall");
-                playCrashSound();
-                crashedWithWall = true;
-            }
-        }else{
-            crashedWithWall = false;
+            playCrashSound();
+            System.out.println("Collision occurred!");
+            kartCrashed = true;
+            isCheckingCollisionEnter = false;
+            kartCrashPosition = 0;
+
+        }
+
+        if(kart.rigidBody.intersects(rightCollider.collider)) {
+            kart.SetKARTSPEED(0, 0);
+            playCrashSound();
+            System.out.println("Collision occurred!");
+            kartCrashed = true;
+            isCheckingCollisionEnter = false;
+            kartCrashPosition = 1;
+
+
         }
 
         if(kart.rigidBody.intersects(topCollider.collider)){
             kart.SetKARTSPEED(0, 0);
-            if(!crashedWithWall){
-                System.out.println("Collided with top wall");
-                playCrashSound();
-                crashedWithWall = true;
-            }
-        }else{
-            crashedWithWall = false;
+            playCrashSound();
+            System.out.println("Collision occurred!");
+            kartCrashed = true;
+            isCheckingCollisionEnter = false;
+            kartCrashPosition = 2;
         }
+
+        if(kart.rigidBody.intersects(middleCollider.collider)){
+            kart.SetKARTSPEED(0, 0);
+            playCrashSound();
+            System.out.println("Collision occurred!");
+            kartCrashed = true;
+            isCheckingCollisionEnter = false;
+            kartCrashPosition = 4;
+        }
+    }
+
+    public void CheckCollisionExit(){
+
+
+        switch(kartCrashPosition){
+            case 0 :
+                if (!kart.rigidBody.intersects(leftCollider.collider)) {
+                    kartCrashed = false;
+                    isCheckingCollisionEnter = true;
+                }
+                break;
+            case 1:
+                if (!kart.rigidBody.intersects(rightCollider.collider)) {
+                    kartCrashed = false;
+                    isCheckingCollisionEnter = true;
+                }
+                break;
+            case 2:
+                if(!kart.rigidBody.intersects(topCollider.collider)) {
+                    //kart.SetKARTSPEED(0, 0);
+                    kartCrashed =false;
+                    isCheckingCollisionEnter = true;
+                }
+                break;
+            case 3:
+                if(!kart.rigidBody.intersects(bottomCollider.collider)) {
+                    //kart.SetKARTSPEED(0, 0);
+                    kartCrashed =false;
+                    isCheckingCollisionEnter = true;
+
+                }
+                break;
+            case 4:
+                if(!kart.rigidBody.intersects(middleCollider.collider)) {
+                    //kart.SetKARTSPEED(0, 0);
+                    kartCrashed =false;
+                    isCheckingCollisionEnter = true;
+
+                }
+                break;
+
+        }
+
+    }
+
+
+
+
+
+
+    private void CheckCarCrash() {
+
+        if(kart.rigidBody.intersects(kartTwo.rigidBody)) {
+            gameOver = true;
+
+        }
+    }
+
+    public void CheckPointsCollision(){
+
 
 
 
@@ -203,8 +288,15 @@ public class MultiplayerGameComponentLayer extends JPanel {
             if(kart.checkPointReached[0] == true && kart.checkPointReached[1] == true && kart.checkPointReached[2] == true && kart.isInOrder){
                 kart.score++;
                 kart.IncrementLap();
-                System.out.println("Kart one score: " + kart.score);
-                gameUILayer.setCurrentLapPlayer1(kart.score);
+                System.out.println("player score: " + kart.score);
+
+                if(playerNumber == 1){
+                    gameUILayer.setCurrentLapPlayer1(kart.score);
+
+                }else{
+                    gameUILayer.setCurrentLapPlayer2(kart.score);
+
+                }
 
             }
             //Reset
