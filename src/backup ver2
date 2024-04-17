@@ -6,9 +6,9 @@ Things to fix
 
 
 
--Change practice --> add another vehicle and set of keys
-- Add vehicle crash function
--Add collider in the middle
+-Change practice --> add another vehicle and set of keys /
+- Add vehicle crash function /
+-Add collider in the middle /
 - Improve join game and host game UI
 - Add match start count down
 

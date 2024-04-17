@@ -224,7 +224,6 @@ public class MultiplayerWindow extends JFrame implements KeyListener{
             DisplayGameEndedMessage(data.getPlayerNumber());
         }
 
-
     }
 
     private void playBackgroundMusic() {
@@ -243,9 +242,6 @@ public class MultiplayerWindow extends JFrame implements KeyListener{
                 bgClip.stop();
                 bgClip.close();
             }).start();
-
-
-
 
         }catch (Exception e){
 

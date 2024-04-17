@@ -22,7 +22,7 @@ public class JoinGame extends JFrame implements Runnable, ActionListener {
 
     private JTextField playerName;
 
-    private JButton joinGameButton;
+    private CustomButton joinGameButton;
 
     Image frameIcon;
     //Try to talk to server first
@@ -38,10 +38,13 @@ public class JoinGame extends JFrame implements Runnable, ActionListener {
 
         JPanel container = new JPanel();
         container.setLayout(new GridLayout(3, 1));
-        container.setBounds(0,0,500, 300);
+        container.setBounds(0,0,500, 280);
 
+        JPanel instructionContainer = new JPanel();
+        instructionContainer.setLayout(null);
         JLabel instruction = new JLabel("Enter the IP address shown on\nyour friend's PC to start!");
-
+        instruction.setBounds(20, 30, 500, 40);
+        instructionContainer.add(instruction);
 
         JPanel ipContainer = new JPanel();
         ipContainer.setLayout(null);
@@ -78,11 +81,15 @@ public class JoinGame extends JFrame implements Runnable, ActionListener {
         playerName = new JTextField("Player2");
 
 
-        joinGameButton = new JButton("Join game");
+        JPanel buttonPanel= new JPanel();
+        buttonPanel.setLayout(null);
+        joinGameButton = new CustomButton("Join game", new Color(224, 101,76), Color.white);
+        joinGameButton.setBounds(140, 0, 200, 50);
         joinGameButton.addActionListener(this);
-        container.add(instruction);
+        buttonPanel.add(joinGameButton);
+        container.add(instructionContainer);
         container.add(ipContainer);
-        container.add(joinGameButton);
+        container.add(buttonPanel);
 
         add(container);
 
