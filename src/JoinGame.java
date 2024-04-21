@@ -1,5 +1,3 @@
-import DataObjects.Status;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -19,8 +17,6 @@ public class JoinGame extends JFrame implements Runnable, ActionListener {
     private JTextField ipField2;
     private JTextField ipField3;
     private JTextField ipField4;
-
-    private JTextField playerName;
 
     private CustomButton joinGameButton;
 
@@ -78,9 +74,6 @@ public class JoinGame extends JFrame implements Runnable, ActionListener {
         ipContainer.add(ipField4);
 
 
-        playerName = new JTextField("Player2");
-
-
         JPanel buttonPanel= new JPanel();
         buttonPanel.setLayout(null);
         joinGameButton = new CustomButton("Join game", new Color(224, 101,76), Color.white);
@@ -92,13 +85,6 @@ public class JoinGame extends JFrame implements Runnable, ActionListener {
         container.add(buttonPanel);
 
         add(container);
-
-
-
-        //Text area to input name
-        //Button to submit details to server.
-        //Server need to reply
-
 
 
         setVisible(true);
@@ -114,12 +100,8 @@ public class JoinGame extends JFrame implements Runnable, ActionListener {
             in = new ObjectInputStream (client.getInputStream());
             out = new ObjectOutputStream (client.getOutputStream());
 
-            //InputHander inputHander = new InputHander();
 
-            //Thread inputHandlerThread = new Thread(inputHander);
-
-            //inputHandlerThread.start();
-            VehicleDataObject obj = new VehicleDataObject(3, playerName.getText(), 0,0, 0, false, false, false);
+            VehicleDataObject obj = new VehicleDataObject(3,0,0, 0, false, false, false);
             out.writeObject(obj);
             out.flush();
 
@@ -141,7 +123,7 @@ public class JoinGame extends JFrame implements Runnable, ActionListener {
         //shutdown();
 
         System.out.println("OpenMultiplayerWindow");
-        MultiplayerWindow w = new MultiplayerWindow(2, playerName.getText(), ipField1.getText(), ipField2.getText(), ipField3.getText(), ipField4.getText(), 3);
+        MultiplayerWindow w = new MultiplayerWindow(2, ipField1.getText(), ipField2.getText(), ipField3.getText(), ipField4.getText(), 3);
         dispose();
     }
 
@@ -166,16 +148,12 @@ public class JoinGame extends JFrame implements Runnable, ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
 
-
         if(e.getSource() == joinGameButton){
             System.out.println("Button clicked ");
-
             System.out.println("IP Field 1: " + ipField1.getText());
             System.out.println("IP Field 2: " + ipField2.getText());
             System.out.println("IP Field 3: " + ipField3.getText());
             System.out.println("IP Field 4: " + ipField4.getText());
-            System.out.println("Player Name: " + playerName.getText());
-
             this.run();
         }
     }

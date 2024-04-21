@@ -93,7 +93,6 @@ public class GameComponentLayer extends JPanel {
         topCheckpoint = new Checkpoint(1, 20, 200, 450, 65);
         leftCheckpoint = new Checkpoint(2, 190, 20, 65, 300);
 
-
         add(rightCheckpoint);
         add(topCheckpoint);
         add(leftCheckpoint);
@@ -326,18 +325,6 @@ public class GameComponentLayer extends JPanel {
             kartOneCrashPosition = 4;
         }
 
-
-
-
-
-
-
-
-
-
-
-
-
     }
 
     public void CheckCollisionExit(){
@@ -389,31 +376,18 @@ public class GameComponentLayer extends JPanel {
 
 
     public void CheckPointsCollisionKartOne(){
-
-
         //Checkpoints collision
         if(kart.rigidBody.intersects(rightCheckpoint.collider)){
-            //playerKart.SetKARTSPEED(0, 0);
-
             kart.checkPointReached[0] = true;
             kart.isInOrder = false;
-
         }
         if(kart.rigidBody.intersects(topCheckpoint.collider)){
-            //playerKart.SetKARTSPEED(0, 0);
-
             kart.checkPointReached[1] = true;
-
         }
-
         if(kart.rigidBody.intersects(leftCheckpoint.collider)){
-            //playerKart.SetKARTSPEED(0, 0);
-
             kart.checkPointReached[2] = true;
             kart.isInOrder = true;
         }
-
-
         //Finish line
         if(kart.rigidBody.intersects(finishLine.collider)){
             //playerKart.SetKARTSPEED(0, 0);
@@ -421,11 +395,9 @@ public class GameComponentLayer extends JPanel {
                 kart.score++;
                 System.out.println("Kart one score: " + kart.score);
                 gameUILayer.setCurrentLapPlayer1(kart.score);
-
             }
-            //Reset
+            //Reset the points
             kart.checkPointReached = new boolean[]{false, false, false};
-
             kart.isInOrder = false;
         }
     }

@@ -1,16 +1,16 @@
 Things to fix
-- Wall collision
+- Wall collision /
     -Problem now: When the vehicle collide with the wall, it cannot go forward even if its direction is not towards the wall.
                   The user need to release the key and press back
-    - Problem 2: The crash sound is
 
 
 
 -Change practice --> add another vehicle and set of keys /
 - Add vehicle crash function /
 -Add collider in the middle /
-- Improve join game and host game UI
-- Add match start count down
+- Improve join game and host game UI /
+
+
 
 
 Things to improve if have time

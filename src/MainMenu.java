@@ -164,7 +164,7 @@ public class MainMenu extends JFrame implements ActionListener {
 
         if(e.getSource() == tutorialButton){
             System.out.println("tutorialButton clicked");
-            PracticeWindow t = new PracticeWindow();
+            OfflineWindow t = new OfflineWindow();
             playMusic = false;
             dispose();
         }

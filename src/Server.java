@@ -1,10 +1,7 @@
-import DataObjects.Status;
-
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -33,7 +30,9 @@ public class Server implements Runnable{
             server = new ServerSocket(9999);
 
             threadPool = Executors.newCachedThreadPool();
-            while(serverIsActive){
+            //For now, only 2 clients can be connected to the server
+            while(serverIsActive && connectedClients.size() < 3){
+
                 //Responsible to accept client request
                 Socket client = server.accept();
 
@@ -87,41 +86,25 @@ public class Server implements Runnable{
             this.client = client;
         }
 
-
         @Override
         public void run() {
             try{
                 out =  new ObjectOutputStream(client.getOutputStream());
                 in = new ObjectInputStream(client.getInputStream());
 
-
                 //out.println("Hello client");   --> Send message to client
                 //in.readLine();     --> get message from client
 
-
                 VehicleDataObject receivedObj = (VehicleDataObject) in.readObject();
-                //System.out.println("Received object from client: " + receivedObj.toString());
 
-                VehicleDataObject response = new VehicleDataObject(receivedObj.getPlayerNumber(), "Server", 0,0, 0, true, false, false);
+                VehicleDataObject response = new VehicleDataObject(receivedObj.getPlayerNumber(), 0,0, 0, true, false, false);
 
                 broadcast(response);
-
-
-
-
-                //System.out.println("Message sent out: " + response.toString());
-
                 VehicleDataObject data;
 
                 while((data = (VehicleDataObject) in.readObject()) != null){
-
-                    //System.out.println("Update: " + data.toString());
                     broadcast(data);
                 }
-
-
-
-
             }catch (IOException e){
                 shutdown();
             } catch (ClassNotFoundException e) {

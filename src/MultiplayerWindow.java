@@ -32,7 +32,7 @@ public class MultiplayerWindow extends JFrame implements KeyListener{
 
 
     private Timer timer; //check or update frame
-    int TIMER_DELAY;
+    int TIMER_DELAY = 100;
     private final int ANIMATION_TICK_RATE = 50; //50ms per tick
 
     int KARTSPEED = 5;
@@ -73,7 +73,6 @@ public class MultiplayerWindow extends JFrame implements KeyListener{
 
     boolean crashWithWall;
 
-    String playerName;
     String ipAddress1;
     String ipAddress2;
     String ipAddress3;
@@ -91,7 +90,7 @@ public class MultiplayerWindow extends JFrame implements KeyListener{
 
 
 
-    public MultiplayerWindow(int playerNumber, String name, String ip1, String ip2,String ip3,String ip4, int maxlap){
+    public MultiplayerWindow(int playerNumber, String ip1, String ip2,String ip3,String ip4, int maxlap){
         this.playerNumber = playerNumber;
 
         setSize(850, 650);
@@ -100,19 +99,12 @@ public class MultiplayerWindow extends JFrame implements KeyListener{
         setTitle("2D Forza Horizon");
         frameIcon =  new ImageIcon(getClass().getResource("assets/images/frameIcon.png")).getImage();
         setIconImage(frameIcon);
-        this.playerName = name;
         this.ipAddress1 = ip1;
         this.ipAddress2 = ip2;
         this.ipAddress3 = ip3;
         this.ipAddress4 = ip4;
 
 
-
-        if(this.playerNumber == 2){
-            this.TIMER_DELAY = 80;
-        }else {
-            this.TIMER_DELAY = 100;
-        }
         //Map layer
         MapLayer mapLayer = new MapLayer();
         carIsMoving = false;
@@ -142,7 +134,6 @@ public class MultiplayerWindow extends JFrame implements KeyListener{
 
         add(container);
 
-
         setVisible(true);
         //Audio
 
@@ -159,21 +150,12 @@ public class MultiplayerWindow extends JFrame implements KeyListener{
             bgClip = AudioSystem.getClip();
             bgClip.open(bgAudioStream);
 
-
-
-
-
-
         }catch (Exception e){
             System.out.println("error1: " + e.getMessage());
-
         }
         playBgMusic = true;
         playBackgroundMusic();
         StartTimer();
-
-
-
 
 
         try {
@@ -183,8 +165,7 @@ public class MultiplayerWindow extends JFrame implements KeyListener{
             out = new ObjectOutputStream(client.getOutputStream());
             in = new ObjectInputStream(client.getInputStream());
 
-
-            out.writeObject(new VehicleDataObject(playerNumber,"player1", 350,440,0,true,true,true));
+            out.writeObject(new VehicleDataObject(playerNumber, 350,440,0,true,true,true));
             // Start a separate thread to listen for server responses
             new Thread(() -> {
                 try{
@@ -214,7 +195,6 @@ public class MultiplayerWindow extends JFrame implements KeyListener{
     private void updateKartTwoPosition(VehicleDataObject data) {
 
         if(data.getPlayerNumber() != playerNumber){
-            System.out.println("Updating opponent position");
             gameComponentLayer.kartTwo.setLocationx(data.GetLocationX());
             gameComponentLayer.kartTwo.setLocationy(data.GetLocationY());
             gameComponentLayer.kartTwo.setDirection(data.GetDirection());
@@ -405,7 +385,7 @@ public class MultiplayerWindow extends JFrame implements KeyListener{
             boolean w = d.Won();
             //update server
 
-            out.writeObject(new VehicleDataObject(playerNumber, "kartOne", xv, yv, dv, true, w, false));
+            out.writeObject(new VehicleDataObject(playerNumber, xv, yv, dv, true, w, false));
             out.flush();
 
         } catch (Exception e) {
@@ -431,22 +411,22 @@ public class MultiplayerWindow extends JFrame implements KeyListener{
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            updateKartMovements();
 
+            updateKartMovements(); //update opponent kart state
             sendPositionUpdateToServer();
-
 
             if(carIsMoving){
                 playSound();
             }else{
                 stopSound();
             }
+
             CheckIfPlayerWins();
 
             if(gameComponentLayer.gameOver){
                 PlayCarCrashTrack();
                 try {
-                    out.writeObject(new VehicleDataObject(playerNumber, "kartOne", 0, 0, 0, true, false, true));
+                    out.writeObject(new VehicleDataObject(playerNumber, 0, 0, 0, true, false, true));
                     out.flush();
                 } catch (IOException a) {
                     throw new RuntimeException(a);
@@ -460,7 +440,7 @@ public class MultiplayerWindow extends JFrame implements KeyListener{
 
         if(gameComponentLayer.kart.currentLap == MAXLAP){
             try {
-                out.writeObject(new VehicleDataObject(playerNumber, "kartOne", 0, 0, 0, true, true, false));
+                out.writeObject(new VehicleDataObject(playerNumber, 0, 0, 0, true, true, false));
                 out.flush();
             } catch (IOException e) {
                 throw new RuntimeException(e);

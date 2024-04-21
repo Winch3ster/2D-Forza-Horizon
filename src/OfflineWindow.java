@@ -4,7 +4,6 @@ import colliders.FinishLine;
 
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.FloatControl;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -18,25 +17,10 @@ import javax.sound.sampled.Clip;
 
 
 
-public class PracticeWindow extends JFrame implements KeyListener{
+public class OfflineWindow extends JFrame implements KeyListener{
     //
     private Timer timer; //check or update frame
     int TIMER_DELAY = 50;
-    private final int ANIMATION_TICK_RATE = 50; //50ms per tick
-
-    int KARTSPEED = 5;
-
-
-
-    ColliderWall leftCollider;
-    ColliderWall rightCollider;
-    ColliderWall topCollider;
-    ColliderWall bottomCollider;
-
-
-    Checkpoint rightCheckpoint;
-    Checkpoint topCheckpoint;
-    Checkpoint leftCheckpoint;
     GameComponentLayer gameComponentLayer;
 
     FinishLine finishLine;
@@ -71,7 +55,7 @@ public class PracticeWindow extends JFrame implements KeyListener{
 
 
 
-    public PracticeWindow(){
+    public OfflineWindow(){
         setSize(850, 650);
         setLayout(null);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -127,12 +111,8 @@ public class PracticeWindow extends JFrame implements KeyListener{
             bgClip.open(bgAudioStream);
 
 
-
-
-
-
         }catch (Exception e){
-
+            System.out.println("Could not play sound: " + e.getMessage());
         }
         playBgMusic = true;
         playBackgroundMusic();

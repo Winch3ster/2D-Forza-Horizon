@@ -22,10 +22,10 @@ public class ColliderWall extends JPanel {
 
         this.setSize(width, height);
         this.setLocation(x, y);
+        this.setOpaque(false);
 
-        this.setVisible(true);
         this.collider = new Rectangle(x, y, width, height);
-
+        this.setVisible(true);
         /*
         colliderDirection
 
@@ -40,7 +40,7 @@ public class ColliderWall extends JPanel {
 
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        Color red = Color.magenta;
+        Color red = new Color(1f,0f,0f,0f );;
         g.setColor(red);
 
         g.fillRect(0, 0, width, height);
