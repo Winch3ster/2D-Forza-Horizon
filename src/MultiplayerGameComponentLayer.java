@@ -140,6 +140,7 @@ public class MultiplayerGameComponentLayer extends JPanel {
             }
 
             CheckPointsCollision();
+            CheckPointsCollisionKartTwo();
             CheckCarCrash();
         }
     }
@@ -256,9 +257,6 @@ public class MultiplayerGameComponentLayer extends JPanel {
 
     public void CheckPointsCollision(){
 
-
-
-
         //Checkpoints collision
         if(kart.rigidBody.intersects(rightCheckpoint.collider)){
             //playerKart.SetKARTSPEED(0, 0);
@@ -292,10 +290,8 @@ public class MultiplayerGameComponentLayer extends JPanel {
 
                 if(playerNumber == 1){
                     gameUILayer.setCurrentLapPlayer1(kart.score);
-
                 }else{
                     gameUILayer.setCurrentLapPlayer2(kart.score);
-
                 }
 
             }
@@ -305,6 +301,50 @@ public class MultiplayerGameComponentLayer extends JPanel {
             kart.isInOrder = false;
         }
     }
+
+    public void CheckPointsCollisionKartTwo(){
+
+
+        //Checkpoints collision
+        if(kartTwo.rigidBody.intersects(rightCheckpoint.collider)){
+            //playerKart.SetKARTSPEED(0, 0);
+
+            kartTwo.checkPointReached[0] = true;
+            kartTwo.isInOrder = false;
+
+        }
+        if(kartTwo.rigidBody.intersects(topCheckpoint.collider)){
+            //playerKart.SetKARTSPEED(0, 0);
+
+            kartTwo.checkPointReached[1] = true;
+
+        }
+
+        if(kartTwo.rigidBody.intersects(leftCheckpoint.collider)){
+            //playerKart.SetKARTSPEED(0, 0);
+
+            kartTwo.checkPointReached[2] = true;
+            kartTwo.isInOrder = true;
+        }
+
+
+        //Finish line
+        if(kartTwo.rigidBody.intersects(finishLine.collider)){
+            //playerKart.SetKARTSPEED(0, 0);
+            if(kartTwo.checkPointReached[0] == true && kartTwo.checkPointReached[1] == true && kartTwo.checkPointReached[2] == true && kartTwo.isInOrder){
+                kartTwo.score++;
+                System.out.println("Kart one score: " + kartTwo.score);
+                gameUILayer.setCurrentLapPlayer2(kartTwo.score);
+
+            }
+            //Reset
+            kartTwo.checkPointReached = new boolean[]{false, false, false};
+
+            kartTwo.isInOrder = false;
+        }
+    }
+
+
 
 
     private void playCrashSound(){
